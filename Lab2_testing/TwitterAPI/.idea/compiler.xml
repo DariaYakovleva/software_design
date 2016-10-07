@@ -22,11 +22,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="TwitterAPI" />
+        <module name="twitter-api" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="TwitterAPI" target="1.7" />
+      <module name="twitter-api" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
