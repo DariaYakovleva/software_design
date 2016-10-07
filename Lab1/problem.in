@@ -1,0 +1,11 @@
+google hash
+новые приходят - остаются
+старые уходят
+хранить не больше n элементов
+пока активен -- храним
+hashmap
+key value storage -- generic value
+
+V get(T key)
+put(K key, V value)
+JUnit тесты написать

@@ -27,7 +27,6 @@ public abstract class AbstractLRUCache<K, V> {
     }
 
     public Optional<V> get(K key) {
-        assert key != null;
         V res = getOK(key);
         if (res == null) return Optional.empty();
         assert storage.get(key).value == res;
@@ -40,8 +39,6 @@ public abstract class AbstractLRUCache<K, V> {
     }
 
     public int put(K key, V value) {
-        assert key != null;
-        assert value != null;
         int res = putOK(key, value);
         assert curSize <= maxSize;
         assert storage.get(key) != null;

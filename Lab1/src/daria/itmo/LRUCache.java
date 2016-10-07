@@ -22,6 +22,7 @@ public class LRUCache<K, V> extends AbstractLRUCache<K, V> {
             item.next.prev = item.prev;
         }
         item.next = head;
+        head.prev = item;
         head = item;
         return item.value;
     }
@@ -42,6 +43,7 @@ public class LRUCache<K, V> extends AbstractLRUCache<K, V> {
         }
         Node<K, V> item = new Node(key, value);
         item.next = head;
+        head.prev = item;
         head = item;
         if (tail == null) tail = item;
         storage.put(key, item);
