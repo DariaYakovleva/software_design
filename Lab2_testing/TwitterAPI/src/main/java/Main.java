@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -6,7 +7,9 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        TagFrequency tags = new TagFrequency("love", 4);
-        List<Integer> frequencies = tags.getFrequency();
+        int hours = 4;
+        TagFrequency tags = new TagFrequency("daria", hours);
+        List<Long> frequencies = tags.getFrequency();
+        System.err.println(Arrays.toString(frequencies.toArray()));
     }
 }
