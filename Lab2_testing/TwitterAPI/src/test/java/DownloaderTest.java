@@ -8,7 +8,6 @@ import com.xebialabs.restito.server.StubServer;
 import org.glassfish.grizzly.http.Method;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.junit.Assert;
-import org.junit.Test;
 
 import java.io.UncheckedIOException;
 import java.util.function.Consumer;
@@ -26,11 +25,11 @@ public class DownloaderTest {
     String tag = "daria";
     Calendar cal = Calendar.getInstance();
     Date curDate = cal.getTime();
-    private final Downloader downloader = new Downloader(curDate, tag);
+    private final Downloader downloader = new Downloader();
 
     @Test
     public void getResponse() throws Exception {
-        JSONObject response = downloader.getResponse();
+        JSONObject response = downloader.getResponse(curDate, tag);
         if (response == null) throw new NullPointerException("Response form downloader is null");
     }
 

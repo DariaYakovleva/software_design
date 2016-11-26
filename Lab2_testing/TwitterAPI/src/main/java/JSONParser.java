@@ -14,13 +14,7 @@ public class JSONParser {
 
     public JSONParser() {}
 
-
-    JSONObject data;
-    public JSONParser(JSONObject data) {
-        this.data = data;
-    }
-
-    public List<Tweet> parse() throws JSONException, ParseException {
+    public List<Tweet> parse(JSONObject data) throws JSONException, ParseException {
         List<Tweet> tweets = new ArrayList<>();
         JSONArray arr = data.getJSONArray("statuses");
         for (int i = 0; i < arr.length(); i++) {

@@ -1,8 +1,5 @@
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.basic.DefaultOAuthConsumer;
-import oauth.signpost.exception.OAuthCommunicationException;
-import oauth.signpost.exception.OAuthExpectationFailedException;
-import oauth.signpost.exception.OAuthMessageSignerException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,18 +19,12 @@ import java.util.Locale;
  */
 public class Downloader {
 
-    String tag;
+
     final String requestPref = "https://api.twitter.com/1.1/search/tweets.json?q=%23";
-    int count = 5;
-    String request = "";
     private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
     OAuthConsumer consumer;
 
-    public Downloader() {}
-
-    public Downloader(Date fromDate, String tag) {
-        this.tag = tag;
-        request = requestPref + tag + "&since=" + formatter.format(fromDate) + "&count=" + count;
+    public Downloader() {
         consumer = new DefaultOAuthConsumer(TagFrequency.consumerKey, TagFrequency.consumerSecret);
         consumer.setTokenWithSecret(TagFrequency.accessToken, TagFrequency.accessTokenSecret);
     }
@@ -58,20 +48,17 @@ public class Downloader {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } catch (OAuthMessageSignerException e) {
-            e.printStackTrace();
-        } catch (OAuthExpectationFailedException e) {
-            e.printStackTrace();
-        } catch (OAuthCommunicationException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
-    JSONObject getResponse() {
+
+    JSONObject getResponse(Date fromDate, String tag) {
+        String request = requestPref + tag + "&since=" + formatter.format(fromDate) + "&count=10";
         String output = downloadByUrl(request);
         try {
             return new JSONObject(output);

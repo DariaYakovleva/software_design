@@ -20,8 +20,8 @@ public class JSONParserTest {
         List<Tweet> answers = getAnswer();
         JSONObject jsonData = new JSONObject(data);
         if (jsonData == null) throw new NullPointerException("JSONObjest is null");
-        JSONParser parser = new JSONParser(jsonData);
-        List<Tweet> tweets = parser.parse();
+        JSONParser parser = new JSONParser();
+        List<Tweet> tweets = parser.parse(jsonData);
         Assert.assertTrue(tweets.size() == answers.size());
         for (int i = 0; i < tweets.size(); i++) {
             Tweet tweet = tweets.get(i);

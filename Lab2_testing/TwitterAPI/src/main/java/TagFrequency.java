@@ -17,47 +17,43 @@ public class TagFrequency {
     public static final String accessTokenSecret = "tUf9SAQAHfcDuCQXOi8cox9yyiJHGtu5rv4lePhqQpbFG";
     public static DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZZZ yyyy", Locale.US);
 
-    Integer hours;
-    String tag;
+
     JSONObject data;
     Calendar cal = Calendar.getInstance();
+    Downloader downloader = null;
+    JSONParser parser = null;
 
-    public TagFrequency() {}
-
-    public TagFrequency(String tag, int hours) {
-        this.tag = tag;
-        this.hours = hours;
+    public TagFrequency() {
+        downloader = new Downloader();
+        parser = new JSONParser();
     }
 
-    Integer getHours() {
-        return hours;
-    }
-    String getTag() {
-        return tag;
+    public TagFrequency(Downloader downloader, JSONParser parser) {
+        this.downloader = downloader;
+        this.parser = parser;
     }
 
-    List<Long> frequencyCount(List<Tweet> tweets) {
-        Long[] result = new Long[getHours()];
-        for (int i = 0; i < getHours(); i++) {
+    private List<Long> frequencyCount(List<Tweet> tweets, int hours) {
+        Long[] result = new Long[hours];
+        for (int i = 0; i < hours; i++) {
             result[i] = (long)0;
         }
         Date curDate = cal.getTime();
         for (Tweet tweet: tweets) {
             int hoursBetween = (int)TimeUnit.MILLISECONDS.toHours(Math.abs(tweet.date.getTime() - curDate.getTime()));
-            if (hoursBetween >= getHours()) continue;
+            if (hoursBetween >= hours) continue;
             result[hoursBetween]++;
         }
         return Arrays.asList(result);
     }
 
-    List<Tweet> getTweets() {
-        Date fromDate = cal.getTime();
-        fromDate.setTime(fromDate.getTime() - TimeUnit.HOURS.toMillis(getHours()));
-        Downloader downloader = new Downloader(fromDate, getTag());
-        data = downloader.getResponse();
+    private List<Tweet> getTweets(String tag, int hours) {
+
         try {
-            JSONParser parser = new JSONParser(data);
-            List<Tweet> tweets = parser.parse();
+            Date fromDate = cal.getTime();
+            fromDate.setTime(fromDate.getTime() - TimeUnit.HOURS.toMillis(hours));
+            data = downloader.getResponse(fromDate, tag);
+            List<Tweet> tweets = parser.parse(data);
             return tweets;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -67,8 +63,8 @@ public class TagFrequency {
         return null;
     }
 
-    public List<Long> getFrequency() {
-        List<Tweet> tweets = getTweets();
-        return frequencyCount(tweets);
+    public List<Long> getFrequency(String tag, int hours) {
+        List<Tweet> tweets = getTweets(tag, hours);
+        return frequencyCount(tweets, hours);
     }
 }

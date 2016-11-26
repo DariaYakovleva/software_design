@@ -1,4 +1,5 @@
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +10,8 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 /**
@@ -22,6 +25,9 @@ public class TagFrequencyTest {
     @Mock
     private JSONParser JSONParser;
 
+    @Mock
+    private Downloader downloader;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -29,17 +35,20 @@ public class TagFrequencyTest {
 
     @Test
     public void getFrequency() throws JSONException, ParseException {
-        when(JSONParser.parse()).thenReturn(createAnswer());
-        TagFrequency tagFrequency = new TagFrequency(tag, hours);
-        List<Long> frequency = tagFrequency.frequencyCount(tagFrequency.getTweets());
+        when(downloader.getResponse(anyObject(), anyString())).thenReturn(new JSONObject());
+        when(JSONParser.parse(anyObject())).thenReturn(createAnswer());
+
+        TagFrequency tagFrequency = new TagFrequency(downloader, JSONParser);
+        List<Long> frequency = tagFrequency.getFrequency(tag, hours);
+
         Assert.assertTrue(frequency.size() == hours);
-        Assert.assertArrayEquals(Arrays.asList((long)3, (long)2, (long)0, (long)0).toArray(), frequency.toArray());
+        Assert.assertArrayEquals(Arrays.asList((long)5, (long)5, (long)4, (long)4).toArray(), frequency.toArray());
     }
 
     private List<Tweet> createAnswer() {
         List<Tweet> tweets = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 18; i++) {
             Date tweetDate = cal.getTime();
             tweetDate.setTime(tweetDate.getTime() - TimeUnit.HOURS.toMillis(i % hours));
             tweets.add(new Tweet("#Daria", tweetDate));

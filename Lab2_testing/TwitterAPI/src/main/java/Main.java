@@ -8,8 +8,8 @@ public class Main {
 
     public static void main(String[] args) {
         int hours = 4;
-        TagFrequency tags = new TagFrequency("daria", hours);
-        List<Long> frequencies = tags.getFrequency();
-        System.err.println(Arrays.toString(frequencies.toArray()));
+        TagFrequency tags = new TagFrequency();
+        List<Long> frequencies = tags.getFrequency("daria", hours);
+        System.out.println(Arrays.toString(frequencies.toArray()));
     }
 }
