@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        String api = args[0]; //api
+        String api = args[0]; //awt or javafx
         String graphType = args[1]; //matrix or adj_list
         System.out.println("Write your graph:");
         DrawingApi drawingApi;

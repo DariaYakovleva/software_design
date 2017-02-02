@@ -28,6 +28,7 @@ public abstract class Graph {
 
     private final double stX = 300, stY = 300;
     private final double r = 30;
+
     public void drawGraph() {
         int n = graph.size();
         boolean[] used = new boolean[n];
@@ -43,8 +44,7 @@ public abstract class Graph {
             Pair<Double, Double> point = getCoordinate(v, dist);
             double vX = point.getKey(), vY = point.getValue();
             drawingApi.drawCircle(vX, vY, r, dist[v]);
-            if (prev[v] != -1) {
-                int to = prev[v];
+            for (Integer to: graph.get(v)) {
                 Pair<Double, Double> point2 = getCoordinate(to, dist);
                 double toX = point2.getKey(), toY = point2.getValue();
                 drawingApi.drawLine(vX + r / 2, vY + r / 2, toX + r / 2, toY + r / 2);
